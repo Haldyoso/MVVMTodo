@@ -5,13 +5,12 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.codinginflow.mvvmtodo.di.ApplicationScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Provider
 
 @Database(entities = [Task::class], version = 1)
-abstract class TaskDatabase:RoomDatabase() {
+abstract class TaskDatabase : RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
 
@@ -26,14 +25,14 @@ abstract class TaskDatabase:RoomDatabase() {
             val dao = database.get().taskDao()
 
             applicationScope.launch {
-                dao.insert(Task("1Wash the dishes"))
-                dao.insert(Task("2Wash the dishes"))
-                dao.insert(Task("3Wash the dishes", important = true))
-                dao.insert(Task("4Wash the dishes", completed = true))
-                dao.insert(Task("5Wash the dishes"))
-                dao.insert(Task("6Wash the dishes", completed = true))
-                dao.insert(Task("7Wash the dishes"))
-
+                dao.insert(Task("Wash the dishes"))
+                dao.insert(Task("Do the laundry"))
+                dao.insert(Task("Buy groceries", important = true))
+                dao.insert(Task("Prepare food", completed = true))
+                dao.insert(Task("Call mom"))
+                dao.insert(Task("Visit grandma", completed = true))
+                dao.insert(Task("Repair my bike"))
+                dao.insert(Task("Call Elon Musk"))
             }
         }
     }

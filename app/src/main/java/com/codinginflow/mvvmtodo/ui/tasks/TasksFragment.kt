@@ -16,12 +16,11 @@ import com.codinginflow.mvvmtodo.data.Task
 import com.codinginflow.mvvmtodo.databinding.FragmentTasksBinding
 import com.codinginflow.mvvmtodo.util.onQueryTextChanged
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TasksFragment: Fragment(    R.layout.fragment_tasks), TasksAdapter.OnItemClickListener {
+class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClickListener {
 
     private val viewModel: TasksViewModel by viewModels()
 
@@ -37,9 +36,7 @@ class TasksFragment: Fragment(    R.layout.fragment_tasks), TasksAdapter.OnItemC
                 adapter = taskAdapter
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(true)
-
             }
-
         }
 
         viewModel.tasks.observe(viewLifecycleOwner) {
@@ -54,7 +51,7 @@ class TasksFragment: Fragment(    R.layout.fragment_tasks), TasksAdapter.OnItemC
     }
 
     override fun onCheckBoxClick(task: Task, isChecked: Boolean) {
-        viewModel.onTaskChecked(task, isChecked)
+        viewModel.onTaskCheckedChanged(task, isChecked)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,7 +65,7 @@ class TasksFragment: Fragment(    R.layout.fragment_tasks), TasksAdapter.OnItemC
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            menu.findItem(R.id.action_hide_completed_task).isChecked=
+            menu.findItem(R.id.action_hide_completed_tasks).isChecked =
                 viewModel.preferencesFlow.first().hideCompleted
         }
     }
@@ -79,18 +76,17 @@ class TasksFragment: Fragment(    R.layout.fragment_tasks), TasksAdapter.OnItemC
                 viewModel.onSortOrderSelected(SortOrder.BY_NAME)
                 true
             }
-
             R.id.action_sort_by_date_created -> {
                 viewModel.onSortOrderSelected(SortOrder.BY_DATE)
-
                 true
             }
-            R.id.action_hide_completed_task -> {
+            R.id.action_hide_completed_tasks -> {
                 item.isChecked = !item.isChecked
                 viewModel.onHideCompletedClick(item.isChecked)
                 true
             }
             R.id.action_delete_all_completed_tasks -> {
+
                 true
             }
             else -> super.onOptionsItemSelected(item)

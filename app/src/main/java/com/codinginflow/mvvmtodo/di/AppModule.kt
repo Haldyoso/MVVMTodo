@@ -21,10 +21,11 @@ object AppModule {
     fun provideDatabase(
         app: Application,
         callback: TaskDatabase.Callback
-    )=  Room.databaseBuilder(app, TaskDatabase::class.java, "task_database")
+    ) = Room.databaseBuilder(app, TaskDatabase::class.java, "task_database")
         .fallbackToDestructiveMigration()
         .addCallback(callback)
         .build()
+
     @Provides
     fun provideTaskDao(db: TaskDatabase) = db.taskDao()
 
@@ -36,4 +37,4 @@ object AppModule {
 
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-annotation class  ApplicationScope
+annotation class ApplicationScope

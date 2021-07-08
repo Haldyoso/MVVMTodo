@@ -3,6 +3,7 @@ package com.codinginflow.mvvmtodo.ui.addedittask
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.viewModels
@@ -26,6 +27,18 @@ class AddEditTaskFragment : Fragment(R.layout.fragment_add_edit_task) {
             checkBoxImportant.jumpDrawablesToCurrentState()
             textViewDateCreated.isVisible = viewModel.task != null
             textViewDateCreated.text = "Created: ${viewModel.task?.createdDateFormatted}"
+
+            editTextTaskName.addTextChangedListener {
+                viewModel.taskName = it.toString()
+            }
+
+            checkBoxImportant.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.taskImportance = isChecked
+            }
+
+            fabSaveTask.setOnClickListener {
+                viewModel.onSaveClick()
+            }
 
         }
     }

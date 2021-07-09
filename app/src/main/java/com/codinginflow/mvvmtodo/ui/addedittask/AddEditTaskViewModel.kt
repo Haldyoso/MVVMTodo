@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codinginflow.mvvmtodo.data.Task
 import com.codinginflow.mvvmtodo.data.TaskDao
+import com.codinginflow.mvvmtodo.ui.ADD_TASK_RESULT_OK
+import com.codinginflow.mvvmtodo.ui.EDIT_TASK_RESULT_OK
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ class AddEditTaskViewModel @ViewModelInject constructor(
     fun onSaveClick(){
         if (taskName.isBlank()) {
             showInvalidInputMessage("Name cannot by empty")
+            return
         }
 
         if (task !=null) {
@@ -49,12 +52,12 @@ class AddEditTaskViewModel @ViewModelInject constructor(
 
     private fun createTask(task: Task) = viewModelScope.launch {
         taskDao.insert(task)
-        addEditTaskEventChannel.send(AddEditTaskEvent.NavigateBackWithResult())
+        addEditTaskEventChannel.send(AddEditTaskEvent.NavigateBackWithResult(ADD_TASK_RESULT_OK))
     }
 
     private fun updateTask(task: Task) = viewModelScope.launch {
         taskDao.update(task)
-        addEditTaskEventChannel.send(AddEditTaskEvent.NavigateBackWithResult())
+        addEditTaskEventChannel.send(AddEditTaskEvent.NavigateBackWithResult(EDIT_TASK_RESULT_OK))
     }
     private fun showInvalidInputMessage(text: String) = viewModelScope.launch {
         addEditTaskEventChannel.send(AddEditTaskEvent.ShowInvalidInputMessage(text))
